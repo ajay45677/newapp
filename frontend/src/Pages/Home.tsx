@@ -4,9 +4,10 @@ import CounterSection from "../component/Home/CounterSection";
 import PortfolioSlider from "../component/Home/PortfolioSlider";
 import ExpertCallForm from "../component/ExpertCallForm";
 import OurServices from "../component/Home/OurServices";
-import TeamSlider from "../component/Home/TeamSlider";
-import BlogSlider from "../component/Home/BlogSlider";
+//import TeamSlider from "../component/Home/TeamSlider";
+//import BlogSlider from "../component/Home/BlogSlider";
 import NewBlogSlider from "../component/Home/NewBlogSlider";
+import NewTeamSlider from "../component/Home/NewTeamSlider";
 
 const Home: React.FC = () => {
     const sections = [
@@ -14,8 +15,9 @@ const Home: React.FC = () => {
         <CounterSection />,
         <OurServices />,
         <PortfolioSlider />,
-        <TeamSlider />,
-        <BlogSlider />,
+        <NewTeamSlider />,
+        //<TeamSlider />,
+        //<BlogSlider />,
         <NewBlogSlider />,
         <ExpertCallForm />
         

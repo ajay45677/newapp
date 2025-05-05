@@ -98,21 +98,25 @@ const BlogSlider: React.FC = () => {
         <h2
            className={` ${
             isVisible
-              ? "opacity-100 animate__animated animate__flipInX animate__slower"
+              ? "opacity-100 wow animate__animated animate__flipInX animate__slower"
               : "opacity-0"
           }`}
+          data-wow-delay="0.5s" 
+          data-wow-duration="2s"
         >Popular Blogs</h2>
         <p 
           className={`heading-text ${
             isVisible
-              ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+              ? "opacity-100 wow animate__animated animate__fadeInTopLeft animate__slower"
               : "opacity-0"
           }`}
+          data-wow-delay="0.5s" 
+          data-wow-duration="2.5s"
         >Insights, Trends, and Tips: Explore Our Popular Blog</p>
         <div  
           className={` ${
             isVisible
-              ? "opacity-100 animate__animated animate__zoomIn animate__slower"
+              ? "opacity-100 animate__animated animate__fadeIn animate__slower"
               : "opacity-0"
           }`}
         >

@@ -50,51 +50,49 @@ const WhyChooseUs: React.FC = () => {
   return (
     <div className="value-section h-auto" ref={sectionRef}>
       <div className="container container-custom">
-        {!data ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-          <h2
-            className={` ${
-              isVisible
-                ? "opacity-100 animate__animated animate__flipInX animate__slower"
-                : "opacity-0"
-            }`}
-          >{data.title}</h2>
-          <p
-            className={`heading-text ${
-              isVisible
-                ? "opacity-100 animate__animated animate__slideInRight animate__slower"
-                : "opacity-0"
-            }`}
-          >{data.subtitle}</p>
-          <div className="row">
-            <div className="col-md-6 d-flex align-items-stretch">
-              <img alt="Drupal development services" src={data.image}
-                className={`h-auto ${
-                  isVisible
-                    ? "opacity-100 animate__animated animate__slideInLeft animate__slower"
-                    : "opacity-0"
-                }`}
-            />
-            </div>
-            <div className="col-md-6 d-flex align-items-stretch">
-              <div 
-                  className={`w-100 mt-4 ${
+        {!data ? ( <p>Loading...</p> ) : (
+          <>
+            <h2
+              className={` ${
+                isVisible
+                  ? "opacity-100 animate__animated animate__flipInX animate__slower"
+                  : "opacity-0"
+              }`}
+            >{data.title}</h2>
+            <p
+              className={`heading-text ${
+                isVisible
+                  ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+                  : "opacity-0"
+              }`}
+            >{data.subtitle}</p>
+            <div className="row">
+              <div className="col-md-6 d-flex align-items-stretch">
+                <img alt="Drupal development services" src={data.image}
+                  className={`h-auto ${
                     isVisible
-                      ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+                      ? "opacity-100 animate__animated animate__slideInLeft animate__slower"
                       : "opacity-0"
                   }`}
-              >
-                {data.reasons.map((reason, index) => (
-                  <div key={index}>
-                    <h6>{reason.title}</h6>
-                    <p className="para-text">{reason.description}</p>
-                  </div>
-                ))}
+              />
+              </div>
+              <div className="col-md-6 d-flex align-items-stretch">
+                <div 
+                    className={`w-100 mt-4 ${
+                      isVisible
+                        ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+                        : "opacity-0"
+                    }`}
+                >
+                  {data.reasons.map((reason, index) => (
+                    <div key={index}>
+                      <h6>{reason.title}</h6>
+                      <p className="para-text">{reason.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
         </>
         )}
       </div>    

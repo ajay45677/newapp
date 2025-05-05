@@ -3,15 +3,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import "animate.css";
+import LogoSlider from "./LogoSlider";
 
-const logos = [
-  { src: "https://www.techinventive.com/img/nasscom.png", alt: "Web development company in Noida India" },
-  { src: "https://www.techinventive.com/img/01-primary-blue-docker-logo 1.png", alt: "Drupal development services" },
-  { src: "https://www.techinventive.com/img/Asset 4 1.png", alt: "web development service in Delhi" },
-  { src: "https://www.techinventive.com/img/Group 1.png", alt: "app development company in Delhi NCR" },
-  { src: "https://www.techinventive.com/img/IBM 1.png", alt: "Top App Development Company in Noida India" },
-  { src: "https://www.techinventive.com/img/aws.png", alt: "mobile app development company Delhi" }
-];
 
 const testimonials = [
   {
@@ -28,19 +21,7 @@ const testimonials = [
   }
 ];
 
-const sliderSettings = {
-  dots: false,
-  infinite: false,
-  slidesToShow: 6,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 1000,
-  responsive: [
-    { breakpoint: 1200, settings: { slidesToShow: 4 } },
-    { breakpoint: 1008, settings: { slidesToShow: 3 } },
-    { breakpoint: 600, settings: { slidesToShow: 2, centerMode: false } }
-  ]
-};
+
 
 const testimonialSettings = {
   dots: false,
@@ -83,31 +64,7 @@ const ValueSection: React.FC = () => {
   return (
     <div className="value-section bg-white h-auto p-6 min-h-[100px]" ref={sectionRef}>
       <div className="container">
-        <h2
-          className={`text-center font-bold text-gray-800 mb-6 transition-opacity duration-700 ${
-            isVisible
-              ? "opacity-100 animate__animated animate__fadeInTopLeft animate__slower"
-              : "opacity-0"
-          }`}
-        >
-          Trusted by some of the best in the industry
-        </h2>
-
-        <div
-          className={`transition-opacity duration-700 mb-6 ${
-            isVisible
-              ? "opacity-100 animate__animated animate__fadeInRight animate__slower"
-              : "opacity-0"
-          }`}
-        >
-            <Slider {...sliderSettings} className="slider2">
-              {logos.map((logo, index) => (
-                <div key={index} className="flex justify-center">
-                  <img src={logo.src} alt={logo.alt} className="w-40 h-auto" />
-                </div>
-              ))}
-            </Slider>
-        </div>
+         <LogoSlider />
         <div
           className={`transition-opacity duration-700 mb-6 ${
             isVisible

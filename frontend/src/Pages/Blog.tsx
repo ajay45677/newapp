@@ -21,7 +21,7 @@ const Blog: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); // Track which icon is hovered
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/blogs")
+    fetch("https://run.mocky.io/v3/1e438399-8506-488e-8bd8-c5ad9f2a4eed")
       .then((res) => res.json())
       .then((data) => setBlogs(data))
       .catch((err) => console.error("Error fetching blogs:", err));

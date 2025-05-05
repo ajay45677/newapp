@@ -20,7 +20,7 @@ const PortfolioMain: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/portfoliodata')
+    fetch('https://run.mocky.io/v3/a19ed5f5-b25c-42f0-8429-eab9bc935422')
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch portfolio data");
@@ -28,7 +28,7 @@ const PortfolioMain: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        setPortfolioDatas(data.portfolioDatas);
+        setPortfolioDatas(data);
       })
       .catch((error) => {
         console.error("Error fetching portfolio data:", error);
@@ -77,8 +77,7 @@ const PortfolioMain: React.FC = () => {
         return (
           <div key={item.id} className={`portfolio-${index + 1}`}>
             <div className="container container-custom">
-              <div
-                className={`row ${isVisible[index] ? "opacity-100 animate__animated animate__fadeInLeft animate__slower" : "opacity-0"}`}
+              <div className="row" 
                 ref={(el) => { sectionRefs.current[index] = el }} // Assign ref correctly here
               >
                 <div className={`col-md-7 ${orderClassForText} ${layoutClass}`}>
@@ -108,9 +107,7 @@ const PortfolioMain: React.FC = () => {
               </div>
 
               <div className={`portfolio-details colors-${index + 1}`}>
-                <div
-                  className={`row ${isVisible[index] ? "opacity-100 animate__animated animate__fadeInRight animate__slower" : "opacity-0"}`}
-                >
+                <div className="row">
                   <div className="col-md-2 col-4 br-32">
                     <p>Platform</p>
                     <div className="portfolio-technology">

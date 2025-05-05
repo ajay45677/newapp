@@ -22,7 +22,7 @@ const MainServices: React.FC = () => {
   const [data, setData] = useState<ServicesData | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/services/custom")
+    fetch("https://run.mocky.io/v3/da32e9e8-0431-430e-b69c-ec79003bbf2d")
       .then((response) => response.json())
       .then((data: ServicesData) => setData(data))
       .catch((error) => console.error("Error fetching services:", error));
