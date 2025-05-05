@@ -19,7 +19,7 @@ const PortfolioSection: React.FC = () => {
   const [data, setPortfolioData] = useState<PortfolioData | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/portfolio")
+    fetch("https://run.mocky.io/v3/3a730933-cc3e-4790-9e7b-100b91524c66")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
