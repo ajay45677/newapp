@@ -40,6 +40,7 @@ const BlogDetails: React.FC = () => {
       .then((res) => res.json())
       .then((data) => setBlog(data))
       .catch((err) => console.error("Error fetching blog:", err));
+      
 
     // Fetch related blogs
     fetch(`http://localhost:5000/api/blogs/related/${id}`)
