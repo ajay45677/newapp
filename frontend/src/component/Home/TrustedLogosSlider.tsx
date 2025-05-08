@@ -1,35 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import Slider from 'react-slick';
-import axios from 'axios';
-import BASE_URL from '../../Config';
-
+const logos = [
+  { id: 1, title:"Web development company in Noida India", img: "https://www.techinventive.com/img/nasscom.png" },
+  { id: 2, title:"Drupal development services", img: "https://www.techinventive.com/img/01-primary-blue-docker-logo%201.png" },
+  { id: 3, title:"web development service in Delhi", img: "https://www.techinventive.com/img/Asset%204%201.png" },
+  { id: 4, title:"app development company in Delhi NCRa", img: "https://www.techinventive.com/img/Group%201.png" },
+  { id: 5, title:"Top App Development Company in Noida India", img: "https://www.techinventive.com/img/IBM%201.png" },
+  { id: 6, title:"mobile app development company Delhi",img: "https://www.techinventive.com/img/aws.png" }
+];
 const TrustedLogosSlider: React.FC = () => {
-  const [logos, setLogos] = useState<string[]>([]);
-
-  useEffect(() => {
-    const fetchLogos = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/jsonapi/node/trusted_companies_logos/383ca1d9-0074-476a-8128-b376fc1264c3/field_companies_logos`,
-          {
-            headers: { "Accept": "application/vnd.api+json" },
-            withCredentials: true,
-          }
-        );
-
-        const files = Array.isArray(res.data.data) ? res.data.data : [res.data.data];
-        const urls = files.map((file: any) =>
-          `https://c2a9-2401-4900-1c64-4ad2-a9d9-4ba5-b25b-99d6.ngrok-free.app${file.attributes.uri.url}`
-        );
-
-        setLogos(urls);
-      } catch (error) {
-        console.error('Error fetching logos:', error);
-      }
-    };
-
-    fetchLogos();
-  }, []);
+  
 
   const sliderSettings = {
     dots: false,
@@ -48,9 +28,9 @@ const TrustedLogosSlider: React.FC = () => {
   return (
 
       <Slider {...sliderSettings} className="slider2">
-        {logos.map((url, index) => (
-          <div key={index} className="px-4">
-            <img src={url} alt={`Logo ${index + 1}`} className="w-40 h-auto" />
+        {logos.map((url, id) => (
+          <div key={id} className="px-4">
+            <img src={url.img} alt={url.title} className="w-40 h-auto" />
           </div>
         ))}
       </Slider>

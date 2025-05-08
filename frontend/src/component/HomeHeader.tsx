@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Container, Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, Dropdown,
   DropdownToggle, DropdownMenu, DropdownItem, Button
 } from "reactstrap";
-import axios from "axios";
 import { Link, NavLink } from "react-router-dom";
 import OffcanvasMenu from "./OffcanvasMenu";
 import "animate.css";
-import BASE_URL from '../Config';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   { id: 1, title: "Website Development" },
@@ -28,66 +30,117 @@ const HomeHeader: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [image, setImage] = useState<string>("");
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const pRef = useRef<HTMLParagraphElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const [typedTitle, setTypedTitle] = useState('');
+  const featureImgRefs = useRef<HTMLImageElement[]>([]);
+  const featureTitleRefs = useRef<HTMLHeadingElement[]>([]);
+  const featureTextRefs = useRef<HTMLParagraphElement[]>([]);
+  const fullTitle = 'Innovation for success';
 
+  // Typing effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY >= 100);
-    };
+    let current = 0;
+    const interval = setInterval(() => {
+      setTypedTitle(fullTitle.slice(0, current + 1));
+      current++;
+      if (current === fullTitle.length) clearInterval(interval);
+    }, 260);
+    return () => clearInterval(interval);
+  }, []);
+
+  // GSAP animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Content parallax
+      gsap.to(contentRef.current, {
+        y: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+
+      // Fade in paragraph
+      gsap.fromTo(
+        pRef.current,
+        { autoAlpha: 0, x: -50 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          duration: 5.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+
+      // Fade in button
+      gsap.fromTo(
+        buttonRef.current,
+        { autoAlpha: 0, y: 50 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 5.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+
+      // Feature animations
+      featureTitleRefs.current.forEach((el, i) => {
+        gsap.fromTo(el, { autoAlpha: 0, y: 30 }, {
+          autoAlpha: 1,
+          y: 0,
+          delay: i * 0.2,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+          }
+        });
+      });
+
+      featureTextRefs.current.forEach((el, i) => {
+        gsap.fromTo(el, { autoAlpha: 0, y: 30 }, {
+          autoAlpha: 1,
+          y: 0,
+          delay: i * 0.2 + 0.2,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+          }
+        });
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Scroll-based header color
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY >= 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const fetchDatas = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/jsonapi/node/hero_banner`,
-          {
-            headers: { "Accept": "application/vnd.api+json" },
-            withCredentials: true,
-          }
-        );
-        setData(response.data?.data || []);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch banner data. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDatas();
-  }, []);
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/jsonapi/node/hero_banner/f57dc241-e61c-4096-ac9c-f3f8d9885fed/field_imgs`,
-          {
-            headers: { "Accept": "application/vnd.api+json" },
-            withCredentials: true,
-          }
-        );
-        const file = res.data.data;
-        const url = `${BASE_URL}${file.attributes.uri.url}`;
-        setImage(url);
-      } catch (error) {
-        console.error("Error fetching logo image:", error);
-      }
-    };
-    fetchImage();
-  }, []);
-
-  if (loading) return <p>Loading Banner Data...</p>;
-  if (error) return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
-  if (!Array.isArray(data) || data.length === 0) return <p>No Data found.</p>;
-
   return (
-    <div className="home-banner">
+    <div className="home-banner" ref={sectionRef}>
       <div className="main-menu">
         <div className={`fixed-top bg-whites ${scrolled ? "darkHeader" : ""}`}>
           <Container className="container-custom">
@@ -112,7 +165,7 @@ const HomeHeader: React.FC = () => {
                   >
                     <DropdownToggle nav caret tag={Link} to="/services">Services</DropdownToggle>
                     <DropdownMenu className="submenu">
-                      {services.map((service) => {
+                      {services.map(service => {
                         const slug = service.title.toLowerCase().replace(/\s+/g, "-");
                         return (
                           <DropdownItem key={service.id} tag={Link} to={`/services/${slug}`}>
@@ -134,19 +187,17 @@ const HomeHeader: React.FC = () => {
       </div>
 
       {/* Banner Image */}
-      {image && (
-        <img src={image} alt="Trusted Company Logo" className="banner-home" />
-      )}
+      <img src="https://www.techinventive.com/img/Rectangle%201.png" alt="Banner" className="banner-home" />
 
       {/* Banner Content */}
-      <Container className="container-custom">
-        <div className="home-banner-content">
-          <h3>{data[0]?.attributes?.field_banner_title}</h3>
-          <p>{data[0]?.attributes?.field_banner_sub_title}</p>
-          <div className="w-100 d-flex">
-            <Button className="blue-btn d-table">
-              {data[0]?.attributes?.field_button_text?.title}
-            </Button>
+      <Container className="container-custom" >
+        <div className="home-banner-content" ref={contentRef}>
+          <h3>{typedTitle}</h3>
+          <p ref={pRef}>
+            Techinventive Software is a top-tier app development company. Their team is highly skilled and delivered a flawless app that exceeded our expectations
+          </p>
+          <div className="w-100 d-flex" ref={buttonRef}>
+            <Button className="blue-btn d-table" >Get In Touch</Button>
             <Link to="/Tech_I_Portfolio_2024.pdf" target="_blank" rel="noopener noreferrer">
               <div className="bg-fd">
                 <img
@@ -161,7 +212,7 @@ const HomeHeader: React.FC = () => {
         </div>
 
         {/* Features */}
-        <div className="home-banner-content-bottom ">
+        <div className="home-banner-content-bottom">
           <div className="col-md-10">
             <div className="row">
               {[
@@ -169,13 +220,29 @@ const HomeHeader: React.FC = () => {
                 { title: "Modelling & Simulation", img: "modelling" },
                 { title: "Consultancy", img: "consultancy" },
                 { title: "Drupal development", img: "drupal" },
-              ].map(({ title, img }) => (
+              ].map(({ title, img }, i) => (
                 <div key={title} className="col-md-3 col-sm-6 d-flex align-items-stretch ps-0 pe-0">
                   <div className="box-44">
-                    <img alt={title} src={`https://www.techinventive.com/img/${img}_blue.svg`} className="on-hover" />
-                    <img alt={title} src={`https://www.techinventive.com/img/${img}.svg`} className="off-hover" />
-                    <h4>{title}</h4>
-                    <p>Provides direction to practical solutions.</p>
+                    <img
+                      alt={title}
+                      src={`https://www.techinventive.com/img/${img}_blue.svg`}
+                      className="on-hover"
+                      ref={el => {
+                        if (el) featureImgRefs.current[i] = el;
+                      }}
+                    />
+                    <img
+                      alt={title}
+                      src={`https://www.techinventive.com/img/${img}.svg`}
+                      className="off-hover"
+                    />
+                    <h4 ref={el => {
+                      if (el) featureTitleRefs.current[i] = el;
+                    }}>{title}</h4>
+
+                    <p ref={el => {
+                      if (el) featureTextRefs.current[i] = el;
+                    }}>Provides direction to practical solutions.</p>
                   </div>
                 </div>
               ))}
@@ -189,14 +256,14 @@ const HomeHeader: React.FC = () => {
           <div className="p-fixed-43">
             <div className="phone-call">
               <a href="tel:+4733378901">
-                <img alt="Phone Icon" src="https://www.techinventive.com/img/ic_round-phone.svg" className="on-hover" />
-                <img alt="Phone Icon" src="https://www.techinventive.com/img/ic_round-phone(2).svg" className="off-hover" />
+                <img alt="Phone" src="https://www.techinventive.com/img/ic_round-phone.svg" className="on-hover" />
+                <img alt="Phone" src="https://www.techinventive.com/img/ic_round-phone(2).svg" className="off-hover" />
               </a>
             </div>
             <div className="whatsapp-call">
               <a href="https://wa.me/+9198********1">
-                <img alt="WhatsApp Icon" src="https://www.techinventive.com/img/ic_baseline-whatsapp.svg" className="on-hover" />
-                <img alt="WhatsApp Icon" src="https://www.techinventive.com/img/ic_baseline-whatsapp(1).svg" className="off-hover" />
+                <img alt="WhatsApp" src="https://www.techinventive.com/img/ic_baseline-whatsapp.svg" className="on-hover" />
+                <img alt="WhatsApp" src="https://www.techinventive.com/img/ic_baseline-whatsapp(1).svg" className="off-hover" />
               </a>
             </div>
           </div>
