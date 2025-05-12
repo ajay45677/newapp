@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import "animate.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface TeamMember {
   name: string;
@@ -14,58 +18,95 @@ interface TeamData {
 }
 
 const AboutTeam: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [data, setData] = useState<TeamData | null>(null);
+  const [typedHeading, setTypedHeading] = useState("");
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
+  const teamBoxesRef = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/team")
-    .then((response) => response.json())
-    .then((data) => setData(data))
-      .catch(error => console.error("Error fetching values:", error));
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error("Error fetching values:", error));
   }, []);
 
-  // Animate on scroll
+  // Typing Effect for Heading
   useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
+  if (!data?.heading) return;
+
+  setTypedHeading(""); // reset before typing starts
+
+  let current = 0;
+  const interval = setInterval(() => {
+    setTypedHeading((prev) => {
+      const nextChar = data.heading[current];
+      current++;
+      if (current >= data.heading.length) clearInterval(interval);
+      return prev + nextChar;
+    });
+  }, 100);
+
+  return () => clearInterval(interval);
+}, [data?.heading]);
+
+
+
+  // GSAP Animations for Paragraph and Boxes
+  useEffect(() => {
+    if (!data) return;
+
+    gsap.fromTo(
+      paragraphRef.current,
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: paragraphRef.current,
+          start: "top 80%",
         },
-        { threshold: 0.3 }
+      }
+    );
+
+    teamBoxesRef.current.forEach((el, index) => {
+      if (!el) return;
+      gsap.fromTo(
+        el,
+        { autoAlpha: 0, y: 50 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          delay: index * 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+          },
+        }
       );
-  
-      if (sectionRef.current) observer.observe(sectionRef.current);
-      return () => observer.disconnect();
-  }, []);
+    });
+  }, [data]);
 
   return (
-    <div className="value-section bg-white about-team h-auto pt-0" ref={sectionRef}>
+    <div className="value-section bg-white about-team h-auto pt-0">
       <div className="container container-custom">
-        <h2
-           className={`${
-            isVisible
-              ? "opacity-100 animate__animated animate__flipInX animate__slower"
-              : "opacity-0"
-          }`}
-        >{data?.heading}</h2>
-        <p
-          className={`heading-text ${
-            isVisible
-              ? "opacity-100 animate__animated animate__slideInRight animate__slower"
-              : "opacity-0"
-          }`}
-        >{data?.paragraph}</p>
-        <div
-           className={`row teams ${
-            isVisible
-              ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-              : "opacity-0"
-          }`}
-        >
+        <h2 ref={headingRef}>{typedHeading}</h2>
+        <p ref={paragraphRef} className="heading-text">
+          {data?.paragraph}
+        </p>
+        <div className="row teams">
           {data?.items.map((member, index) => (
-            <div key={index} className="col-md-4 col-6">
+            <div
+              key={index}
+              className="col-md-4 col-6"
+              ref={(el) => {
+                teamBoxesRef.current[index] = el;
+              }}
+            >
               <div className="team-box">
                 <img alt={member.name} src={member.image} />
                 <div className="team-more">

@@ -15,6 +15,10 @@ import {
 import { Link, NavLink, useLocation } from "react-router-dom";
 import OffcanvasMenu from "./OffcanvasMenu";
 import "animate.css";
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   { id: 1, title: "Website Development" },
@@ -97,24 +101,56 @@ const Header: React.FC = () => {
 
   const bannerContent = getBannerContent();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  
+  const contentRef = useRef<HTMLDivElement>(null);
+  const pRef = useRef<HTMLParagraphElement>(null);
+  const [typedTitle, setTypedTitle] = useState('');
+  const fullTitle = bannerContent?.title || '';
+
+  // Typing effect
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
+    let current = 0;
+    const interval = setInterval(() => {
+      setTypedTitle(fullTitle.slice(0, current + 1));
+      current++;
+      if (current === fullTitle.length) clearInterval(interval);
+    }, 260);
+    return () => clearInterval(interval);
+  }, []);
+
+  // GSAP animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Content parallax
+      gsap.to(contentRef.current, {
+        y: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+
+      // Fade in paragraph
+      gsap.fromTo(
+        pRef.current,
+        { autoAlpha: 0, x: -50 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          duration: 5.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
         }
-      },
-      { threshold: 0.3 }
-    );
+      );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    }, sectionRef);
 
-    return () => observer.disconnect();
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -122,13 +158,7 @@ const Header: React.FC = () => {
       <div className="main-menu rest-header" ref={sectionRef}>
         <div className={`fixed-top bg-whites ${scrolled ? "darkHeader2" : ""}`}>
           <Container className="container-custom">
-            <Navbar expand="md" light 
-               className={`p-0 ${
-                isVisible
-                  ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-                  : "opacity-0"
-              }`}
-            >
+            <Navbar expand="md" light className="p-0">
               <NavbarBrand tag={Link} to="/">
                 <img
                   alt="Techinventive Logo"
@@ -207,7 +237,7 @@ const Header: React.FC = () => {
 
       {/* ✅ Banner Section */}
       {bannerContent && (
-        <div className="banner">
+        <div className="banner" ref={contentRef}>
           <img
             alt={bannerContent.title}
             src={bannerContent.bannerImage}
@@ -215,20 +245,8 @@ const Header: React.FC = () => {
           />
           <Container className="container-custom">
             <div className="banner-content">
-              <h2
-                  className={` ${
-                    isVisible
-                      ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-                      : "opacity-0"
-                  }`} 
-              >{bannerContent.title}</h2>
-              <p
-                 className={` ${
-                  isVisible
-                    ? "opacity-100 animate__animated animate__fadeInRight animate__slower"
-                    : "opacity-0"
-                }`}
-              >{bannerContent.description}</p>
+              <h2>{typedTitle}</h2>
+              <p ref={pRef}>{bannerContent.description}</p>
             </div>
           </Container>
         </div>
