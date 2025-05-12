@@ -88,7 +88,7 @@ const ValueSection: React.FC = () => {
           {
             autoAlpha: 1,
             y: 0,
-            duration: 1.5,
+            duration: 4.5,
             ease: "power2.out",
             scrollTrigger: {
               trigger: sectionRef.current,

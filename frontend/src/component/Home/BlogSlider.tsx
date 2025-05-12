@@ -3,6 +3,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "animate.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 const blogPosts = [
   {
@@ -43,6 +46,12 @@ const blogPosts = [
 ];
 
 const BlogSlider: React.FC = () => {
+  const [typedTitle, setTypedTitle] = useState('');
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const fullTitle = 'Popular Blogs';
   const settings = {
     dots: false,
     arrows: true,
@@ -71,58 +80,102 @@ const BlogSlider: React.FC = () => {
       },
     ],
   };
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  
 
+  // Typing effect
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
+      let current = 0;
+      const delay = 2000; // Delay before typing starts
+    
+      const timer = setTimeout(() => {
+        const interval = setInterval(() => {
+          setTypedTitle(fullTitle.slice(0, current + 1));
+          current++;
+          if (current === fullTitle.length) {
+            clearInterval(interval);
+          }
+        }, 100); // Adjust speed as needed
+      }, delay);
+    
+      return () => {
+        clearTimeout(timer);
+      };
+  }, []);
+  
+  // Animate slider wrapper immediately after render (no scroll trigger)
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".blog-slide",
+        { autoAlpha: 0, y: 30, stagger: 6 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: wrapperRef.current,
+            start: "top 85%",
+            once: true,
+          },
         }
-      },
-      { threshold: 0.3 }
-    );
+      );
+    }, wrapperRef);
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    return () => ctx.revert();
+  }, []);
 
-    return () => observer.disconnect();
+  // Animate subtitle & paragraph
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (subtitleRef.current) {
+        gsap.fromTo(
+          subtitleRef.current,
+          { autoAlpha: 0, x: -50 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 4,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: subtitleRef.current,
+              start: "top 90%",
+            },
+          }
+        );
+      }
+      
+      if (buttonRef.current) {
+        gsap.fromTo(
+          buttonRef.current,
+          { autoAlpha: 0, y: 50 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 3,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <div className="ceo-section-3 h-auto ps-0 pe-0" ref={sectionRef}>
       <div className="container container-custom">
-        <h2
-           className={` ${
-            isVisible
-              ? "opacity-100 wow animate__animated animate__flipInX animate__slower"
-              : "opacity-0"
-          }`}
-          data-wow-delay="0.5s" 
-          data-wow-duration="2s"
-        >Popular Blogs</h2>
-        <p 
-          className={`heading-text ${
-            isVisible
-              ? "opacity-100 wow animate__animated animate__fadeInTopLeft animate__slower"
-              : "opacity-0"
-          }`}
-          data-wow-delay="0.5s" 
-          data-wow-duration="2.5s"
-        >Insights, Trends, and Tips: Explore Our Popular Blog</p>
-        <div  
-          className={` ${
-            isVisible
-              ? "opacity-100 animate__animated animate__fadeIn animate__slower"
-              : "opacity-0"
-          }`}
-        >
+        <h2>{typedTitle}</h2>
+        <p className="heading-text" ref={subtitleRef}>Insights, Trends, and Tips: Explore Our Popular Blog</p>
+        <div ref={wrapperRef}>
             <Slider {...settings} className="slider6">
               {blogPosts.map((post, index) => (
-                <div key={index} className="col-md-4">
+                <div key={index} className="col-md-4 blog-slide">
                   <a className="card" href={post.link}>
                     <div className="card-content">
                       <div className="date">{post.date}</div>
@@ -136,16 +189,12 @@ const BlogSlider: React.FC = () => {
                 </div>
               ))}
             </Slider>
-        </div>     
-        <a href="/blog"
-           className={`see-more-blue ${
-            isVisible
-              ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-              : "opacity-0"
-          }`}
-        >
-          See all <img alt="Drupal development services" src="https://www.techinventive.com/img/lucide_move-right-blue.png" />
-        </a>
+        </div> 
+        <div ref={buttonRef}>
+          <a href="/blog" className="see-more-blue">
+            See all <img alt="Drupal development services" src="https://www.techinventive.com/img/lucide_move-right-blue.png" />
+          </a>
+        </div> 
       </div>
     </div>
   );

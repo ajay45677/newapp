@@ -40,7 +40,6 @@ const Counter: React.FC<CounterProps> = ({ start, end, duration }) => {
         },
         { threshold: 0.5 }
       );
-
       observer.observe(ref.current);
     }
 
@@ -53,18 +52,18 @@ const Counter: React.FC<CounterProps> = ({ start, end, duration }) => {
   return <span ref={ref}>{count}</span>;
 };
 
-const CounterSection = () => {
+const CounterSection: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const counterBoxesRef = useRef<HTMLDivElement[]>([]);
-  const paragraphsRef = useRef<HTMLParagraphElement[]>([]);
+  const counterBoxesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
   const imageRef = useRef<HTMLImageElement>(null);
   const linkRef = useRef<HTMLParagraphElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title Typewriter
+      // Typewriter for title
       if (titleRef.current) {
         const chars = titleRef.current.textContent?.split("") || [];
         titleRef.current.innerHTML = "";
@@ -93,7 +92,7 @@ const CounterSection = () => {
           {
             autoAlpha: 1,
             y: 0,
-            duration: 5,
+            duration: 1.5,
             ease: "power2.out",
             scrollTrigger: {
               trigger: subtitleRef.current,
@@ -103,7 +102,7 @@ const CounterSection = () => {
         );
       }
 
-      // Counters
+      // Counter boxes
       counterBoxesRef.current.forEach((box, i) => {
         if (box) {
           gsap.fromTo(
@@ -112,9 +111,9 @@ const CounterSection = () => {
             {
               autoAlpha: 1,
               scale: 1,
-              duration: 2.8,
+              duration: 1.5,
+              delay: i * 0.2,
               ease: "back.out(1.7)",
-              delay: i * 0.1,
               scrollTrigger: {
                 trigger: box,
                 start: "top 90%",
@@ -133,8 +132,8 @@ const CounterSection = () => {
             {
               autoAlpha: 1,
               y: 0,
-              duration: 1,
-              delay: i * 0.2,
+              duration: 1.2,
+              delay: i * 0.15,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: p,
@@ -153,7 +152,7 @@ const CounterSection = () => {
           {
             autoAlpha: 1,
             x: 0,
-            duration: 5.2,
+            duration: 1.8,
             ease: "power3.out",
             scrollTrigger: {
               trigger: imageRef.current,
@@ -163,7 +162,7 @@ const CounterSection = () => {
         );
       }
 
-      // Link Button
+      // Link
       if (linkRef.current) {
         gsap.fromTo(
           linkRef.current,
@@ -171,7 +170,7 @@ const CounterSection = () => {
           {
             autoAlpha: 1,
             scale: 1,
-            duration: 5.6,
+            duration: 1.5,
             ease: "back.out(1.7)",
             scrollTrigger: {
               trigger: linkRef.current,
@@ -186,9 +185,11 @@ const CounterSection = () => {
   }, []);
 
   return (
-    <div id="counter" className="achiement-section" ref={sectionRef}>
+    <div id="counter" className="achiement-section py-12" ref={sectionRef}>
       <div className="container mx-auto text-center">
-        <h2 ref={titleRef} className="text-3xl font-bold mb-2">About US</h2>
+        <h2 ref={titleRef} className="text-3xl font-bold mb-2">
+          About US
+        </h2>
 
         <p ref={subtitleRef} className="heading-text text-lg mb-8">
           Innovative Software Solutions Tailored to Your Business Needs.
@@ -199,7 +200,9 @@ const CounterSection = () => {
             <div className="col-md-4" key={index}>
               <div
                 className="box-ach-2"
-                ref={(el) => (counterBoxesRef.current[index] = el!)}
+                ref={(el) => {
+                  counterBoxesRef.current[index] = el;
+                }}
               >
                 <h5 className="count percent">
                   <Counter start={0} end={value} duration={2000} />
@@ -220,7 +223,9 @@ const CounterSection = () => {
               ].map((text, i) => (
                 <p
                   key={i}
-                  ref={(el) => (paragraphsRef.current[i] = el!)}
+                  ref={(el) => {
+                    paragraphsRef.current[i] = el;
+                  }}
                   className="achive-text text-left text-base mb-4"
                 >
                   {text}
@@ -231,7 +236,10 @@ const CounterSection = () => {
                 ref={linkRef}
                 className="achive-text text-left text-base"
               >
-                <a href="about-us" className="text-blue-600 font-semibold inline-flex items-center gap-1">
+                <a
+                  href="about-us"
+                  className="text-blue-600 font-semibold inline-flex items-center gap-1"
+                >
                   View more{" "}
                   <img
                     alt="Responsive Website Design Company in Delhi NCR"

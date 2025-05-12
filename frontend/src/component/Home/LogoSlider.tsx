@@ -39,7 +39,7 @@ const LogoSlider: React.FC = () => {
         ease: "power2.out",
         scrollTrigger: {
           trigger: headingRef.current,
-          start: "top 60%",
+          start: "top 80%",
         },
       }
     );

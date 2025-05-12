@@ -3605,4 +3605,7 @@ footer .box-5 a:hover {
 } 
 .animate__slower {
 	animation-duration: 5s; /* or 4s, adjust as needed */
-  } 
+}
+.slick-slide {
+	transform: none !important; /* not recommended unless testing */
+} 
