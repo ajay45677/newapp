@@ -53,138 +53,138 @@ const Counter: React.FC<CounterProps> = ({ start, end, duration }) => {
 };
 
 const CounterSection: React.FC = () => {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const counterBoxesRef = useRef<(HTMLDivElement | null)[]>([]);
-  const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const linkRef = useRef<HTMLParagraphElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
+const titleRef = useRef<HTMLHeadingElement>(null);
+const subtitleRef = useRef<HTMLParagraphElement>(null);
+const counterBoxesRef = useRef<(HTMLDivElement | null)[]>([]);
+const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
+const imageRef = useRef<HTMLImageElement>(null);
+const linkRef = useRef<HTMLParagraphElement>(null);
+const sectionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Typewriter for title
-      if (titleRef.current) {
-        const chars = titleRef.current.textContent?.split("") || [];
-        titleRef.current.innerHTML = "";
-        chars.forEach((char, i) => {
-          const span = document.createElement("span");
-          span.textContent = char;
-          span.style.opacity = "0";
-          titleRef.current?.appendChild(span);
+useEffect(() => {
+  const ctx = gsap.context(() => {
+    // Typewriter for title
+    if (titleRef.current) {
+      const chars = titleRef.current.textContent?.split("") || [];
+      titleRef.current.innerHTML = "";
+      chars.forEach((char, i) => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.style.opacity = "0";
+        titleRef.current?.appendChild(span);
 
-          gsap.to(span, {
-            opacity: 1,
-            delay: i * 0.05,
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: "top 85%",
-            },
-          });
+        gsap.to(span, {
+          opacity: 1,
+          delay: i * 0.05,
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 85%",
+          },
         });
-      }
-
-      // Subtitle
-      if (subtitleRef.current) {
-        gsap.fromTo(
-          subtitleRef.current,
-          { autoAlpha: 0, y: 20 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 1.5,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: subtitleRef.current,
-              start: "top 90%",
-            },
-          }
-        );
-      }
-
-      // Counter boxes
-      counterBoxesRef.current.forEach((box, i) => {
-        if (box) {
-          gsap.fromTo(
-            box,
-            { autoAlpha: 0, scale: 0.8 },
-            {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 1.5,
-              delay: i * 0.2,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: box,
-                start: "top 90%",
-              },
-            }
-          );
-        }
       });
+    }
 
-      // Paragraphs
-      paragraphsRef.current.forEach((p, i) => {
-        if (p) {
-          gsap.fromTo(
-            p,
-            { autoAlpha: 0, y: 30 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 1.2,
-              delay: i * 0.15,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: p,
-                start: "top 85%",
-              },
-            }
-          );
+    // Subtitle
+    if (subtitleRef.current) {
+      gsap.fromTo(
+        subtitleRef.current,
+        { autoAlpha: 0, y: 20 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: subtitleRef.current,
+            start: "top 90%",
+          },
         }
-      });
+      );
+    }
 
-      // Image
-      if (imageRef.current) {
+    // Counter boxes
+    counterBoxesRef.current.forEach((box, i) => {
+      if (box) {
         gsap.fromTo(
-          imageRef.current,
-          { autoAlpha: 0, x: 50 },
-          {
-            autoAlpha: 1,
-            x: 0,
-            duration: 1.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: imageRef.current,
-              start: "top 90%",
-            },
-          }
-        );
-      }
-
-      // Link
-      if (linkRef.current) {
-        gsap.fromTo(
-          linkRef.current,
+          box,
           { autoAlpha: 0, scale: 0.8 },
           {
             autoAlpha: 1,
             scale: 1,
             duration: 1.5,
+            delay: i * 0.2,
             ease: "back.out(1.7)",
             scrollTrigger: {
-              trigger: linkRef.current,
+              trigger: box,
               start: "top 90%",
             },
           }
         );
       }
-    }, sectionRef);
+    });
 
-    return () => ctx.revert();
-  }, []);
+    // Paragraphs
+    paragraphsRef.current.forEach((p, i) => {
+      if (p) {
+        gsap.fromTo(
+          p,
+          { autoAlpha: 0, y: 30 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1.2,
+            delay: i * 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: p,
+              start: "top 85%",
+            },
+          }
+        );
+      }
+    });
 
-  return (
+    // Image
+    if (imageRef.current) {
+      gsap.fromTo(
+        imageRef.current,
+        { autoAlpha: 0, x: 50 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          duration: 1.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: imageRef.current,
+            start: "top 90%",
+          },
+        }
+      );
+    }
+
+    // Link
+    if (linkRef.current) {
+      gsap.fromTo(
+        linkRef.current,
+        { autoAlpha: 0, scale: 0.8 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 1.5,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: linkRef.current,
+            start: "top 90%",
+          },
+        }
+      );
+    }
+  }, sectionRef);
+
+  return () => ctx.revert();
+}, []);
+
+return (
     <div id="counter" className="achiement-section py-12" ref={sectionRef}>
       <div className="container mx-auto text-center">
         <h2 ref={titleRef} className="text-3xl font-bold mb-2">

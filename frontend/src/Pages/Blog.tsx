@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import ExpertCallForm from "../component/ExpertCallForm";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "animate.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface BlogType {
   id: number;
@@ -15,10 +19,12 @@ interface BlogType {
 }
 
 const Blog: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [blogs, setBlogs] = useState<BlogType[]>([]);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); // Track which icon is hovered
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const breadcrumbRef = useRef<HTMLDivElement>(null);
+  const blogCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     fetch("https://run.mocky.io/v3/1e438399-8506-488e-8bd8-c5ad9f2a4eed")
@@ -28,25 +34,56 @@ const Blog: React.FC = () => {
   }, []);
 
   useEffect(() => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-              observer.disconnect();
-            }
-          },
-          { threshold: 0.3 }
+    if (!blogs.length) return;
+
+    const ctx = gsap.context(() => {
+      // Animate breadcrumb section
+      if (breadcrumbRef.current) {
+        gsap.fromTo(
+          breadcrumbRef.current,
+          { autoAlpha: 0, y: -20 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: breadcrumbRef.current,
+              start: "top 90%",
+            },
+          }
         );
-    
-        if (sectionRef.current) {
-          observer.observe(sectionRef.current);
+      }
+
+      // Animate blog cards
+      blogCardRefs.current.forEach((ref, index) => {
+        if (ref) {
+          gsap.fromTo(
+            ref,
+            { autoAlpha: 0, y: 40 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.8,
+              delay: index * 0.1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: ref,
+                start: "top 95%",
+              },
+            }
+          );
         }
-    
-        return () => observer.disconnect();
-  }, []);
+      });
+
+      
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [blogs]);
 
   return (
-    <div>
+    <div ref={sectionRef}>
       {/* Social Media Icons */}
       <div className="fixed-icon">
         {[
@@ -72,41 +109,36 @@ const Blog: React.FC = () => {
       </div>
 
       {/* Blog Section */}
-      <div className="ceo-section-3 h-auto pt-0 blog-listing"  ref={sectionRef}>
+      <div className="ceo-section-3 h-auto pt-0 blog-listing">
         <div className="container">
-          <nav aria-label="breadcrumb" 
-             className={`breadcrumb-nav mb-5 mt-4 ${
-              isVisible
-                ? "opacity-100 animate__animated animate__fadeInLeft animate__fast"
-                : "opacity-0"
-            }`}
-          >
+          {/* Breadcrumb */}
+          <nav aria-label="breadcrumb" className="breadcrumb-nav mb-5 mt-4" ref={breadcrumbRef}>
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><a href="/">Home</a></li>
               <li className="breadcrumb-item active">Blog</li>
             </ol>
           </nav>
 
-          {/* Grid layout for blog cards */}
-          <div 
-              className={`row blog-page ${
-                isVisible
-                  ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-                  : "opacity-0"
-              }`}
-          >
+          {/* Blog Cards Grid */}
+          <div className="row blog-page">
             {blogs.map((blog) => (
-              <div key={blog.id} className="col-md-4">
-                <Link to={`/blog/${blog.title.toLowerCase().replace(/\s+/g, "-")}`} key={blog.id}  className="card">
-                  {blog.image && <img src={blog.image} alt={blog.title} className="" />}
-                  {/* Overlay */}
+              <div key={blog.id} className="col-md-4" 
+                  ref={(el) => {
+                        blogCardRefs.current[blog.id] = el;
+                  }}
+                >
+                <Link
+                  to={`/blog/${blog.title.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="card"
+                >
+                  {blog.image && <img src={blog.image} alt={blog.title} />}
                   <div className="card-content">
                     <div className="date">{blog.date}</div>
-                    <h3 className="">{blog.title}</h3>
-                    <p className="">{blog.description}</p>
+                    <h3>{blog.title}</h3>
+                    <p>{blog.description}</p>
                     <div className="tags">
-                      {blog.tags?.map((tag, index) => (
-                        <span key={index} className="tag">{tag}</span>
+                      {blog.tags?.map((tag, idx) => (
+                        <span key={idx} className="tag">{tag}</span>
                       ))}
                     </div>
                   </div>

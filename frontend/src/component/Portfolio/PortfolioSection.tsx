@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import "animate.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface PortfolioItem {
   id: string;
@@ -15,7 +18,8 @@ interface PortfolioData {
 
 const PortfolioSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const itemsRef = useRef<HTMLLIElement[]>([]);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
   const [data, setPortfolioData] = useState<PortfolioData | null>(null);
 
   useEffect(() => {
@@ -31,60 +35,80 @@ const PortfolioSection: React.FC = () => {
   }, []);
 
   useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-          }
+    if (data && sectionRef.current) {
+      // Animate portfolio items
+      gsap.fromTo(
+        itemsRef.current,
+        {
+          opacity: 0,
+          y: 50,
         },
-        { threshold: 0.3 }
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.2,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
       );
-  
-      if (sectionRef.current) {
-        observer.observe(sectionRef.current);
+
+      // Animate paragraph
+      if (paragraphRef.current) {
+        gsap.fromTo(
+          paragraphRef.current,
+          {
+            opacity: 0,
+            x: 100,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: paragraphRef.current,
+              start: "top 85%",
+            },
+          }
+        );
       }
-  
-      return () => observer.disconnect();
-  }, []);
+    }
+  }, [data]);
 
   return (
     <div className="portfolio-section" ref={sectionRef}>
       <div className="container container-custom">
-      {!data ? (
+        {!data ? (
           <p>Loading...</p>
         ) : (
           <>
-          <ul
-             className={`row set-box ${
-              isVisible
-                ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
-                : "opacity-0"
-            }`}
-          >
-            {data.portfolioItems.map((item) => (
-              <li key={item.id}>
-                <div className="portfolio-sec">
-                  <div className="portfolio-grey">
-                    <img alt={item.alt} src={item.image} />
+            <ul className="row set-box">
+              {data.portfolioItems.map((item, index) => (
+                <li
+                  key={item.id}
+                  ref={(el) => {
+                    if (el) itemsRef.current[index] = el;
+                  }}
+                >
+                  <div className="portfolio-sec">
+                    <div className="portfolio-grey">
+                      <img alt={item.alt} src={item.image} />
+                    </div>
+                    <p>{item.category}</p>
                   </div>
-                  <p>{item.category}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p 
-            className={`heading-text ${
-              isVisible
-                ? "opacity-100 animate__animated animate__fadeInRight animate__slower"
-                : "opacity-0"
-            }`}
-          >{data.paragraph}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="heading-text" ref={paragraphRef}>
+              {data.paragraph}
+            </p>
           </>
-      )}
+        )}
       </div>
-
-      
     </div>
   );
 };

@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import "animate.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface PortfolioData {
   id: number;
@@ -19,94 +23,120 @@ const PortfolioMain: React.FC = () => {
   const [portfolioDatas, setPortfolioDatas] = useState<PortfolioData[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const detailRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => {
     fetch('https://run.mocky.io/v3/a19ed5f5-b25c-42f0-8429-eab9bc935422')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch portfolio data");
-        }
-        return response.json();
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch portfolio data");
+        return res.json();
       })
-      .then((data) => {
-        setPortfolioDatas(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching portfolio data:", error);
+      .then((data) => setPortfolioDatas(data))
+      .catch((err) => {
+        console.error(err);
         setError("Error fetching portfolio data. Please try again.");
       });
   }, []);
 
-  // Create a ref for each portfolio section
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]); // This is correct for an array of refs.
-  const [isVisible, setIsVisible] = useState<boolean[]>(new Array(portfolioDatas.length).fill(false));
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry], observer) => {
-        const index = sectionRefs.current.indexOf(entry.target as HTMLDivElement);
-        if (index !== -1 && entry.isIntersecting) {
-          const updatedVisibility = [...isVisible];
-          updatedVisibility[index] = true;
-          setIsVisible(updatedVisibility);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
+    if (portfolioDatas.length === 0) return;
 
-    // Observing each section
+    // Animate main sections
     sectionRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
+      if (ref) {
+        gsap.fromTo(
+          ref,
+          { opacity: 0, y: 100 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ref,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    });
+
+    // Animate bottom detail boxes
+    detailRefs.current.forEach((ref) => {
+      if (ref) {
+        gsap.fromTo(
+          ref,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ref,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
     });
 
     return () => {
-      sectionRefs.current.forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [portfolioDatas, isVisible]);
+  }, [portfolioDatas]);
 
   return (
     <div>
-      {error && <div className="error-message">{error}</div>} {/* Error display */}
+      {error && <div className="error-message">{error}</div>}
       {portfolioDatas.map((item, index) => {
-        const layoutClass = index % 2 === 0 ? "flex-row-reverse" : "flex-row";
-        const orderClassForImage = index % 2 === 0 ? 'order-md-1' : 'order-md-2';
-        const orderClassForText = index % 2 === 0 ? 'order-md-2' : 'order-md-1';
+        const orderImage = index % 2 === 0 ? 'order-md-1' : 'order-md-2';
+        const orderText = index % 2 === 0 ? 'order-md-2' : 'order-md-1';
 
         return (
           <div key={item.id} className={`portfolio-${index + 1}`}>
             <div className="container container-custom">
-              <div className="row" 
-                ref={(el) => { sectionRefs.current[index] = el }} // Assign ref correctly here
+              <div
+                className="row align-items-center"
+                ref={(el) => {
+                  sectionRefs.current[index] = el;
+                }}
               >
-                <div className={`col-md-7 ${orderClassForText} ${layoutClass}`}>
-                  <div className="w-100">
+                <div className={`col-md-7 ${orderText}`}>
+                  <div>
                     <h2>
-                      <span className="color-11">{item.title.split(' ')[0]}</span>
+                      <span className="color-11">{item.title.split(' ')[0]}</span>{" "}
                       <span className="color-12">{item.title.split(' ')[1]}</span>
                     </h2>
                     <ul>
-                      {item.category.map((cat, idx) => (
-                        <li key={idx}>{cat}</li>
-                      ))}
+                      {item.category.map((cat, idx) => <li key={idx}>{cat}</li>)}
                     </ul>
                     <p><span>Business challenge:</span> {item.businessChallenge}</p>
                     <p><span>Solution:</span> {item.solution}</p>
-                    <p><span>Find it here: </span>
+                    <p>
+                      <span>Find it here:</span>{" "}
                       <a href={item.link} target="_blank" rel="noopener noreferrer">{item.link}</a>
                     </p>
                   </div>
                 </div>
-                <div className={`col-md-5 ${orderClassForImage} d-flex justify-content-md-center ${layoutClass === 'flex-row-reverse' ? 'justify-content-end' : 'justify-content-start'}`}>
+                <div className={`col-md-5 ${orderImage} d-flex justify-content-center`}>
                   <img
-                    alt="Portfolio Image"
+                    alt="Portfolio"
                     src={item.websiteImages[0]}
+                    className="img-fluid rounded"
                   />
                 </div>
               </div>
 
-              <div className={`portfolio-details colors-${index + 1}`}>
+              <div
+                className={`portfolio-details colors-${index + 1}`}
+                ref={(el) => {
+                  detailRefs.current[index] = el;
+                }}
+              >
                 <div className="row">
                   <div className="col-md-2 col-4 br-32">
                     <p>Platform</p>
@@ -128,7 +158,7 @@ const PortfolioMain: React.FC = () => {
                     <p>Stack</p>
                     <div className="portfolio-technology custom-for-class">
                       {item.techStackImages.map((img, idx) => (
-                        <img key={idx} alt="Technology Stack" src={img} className="me-3" />
+                        <img key={idx} alt="Tech" src={img} className="me-3" />
                       ))}
                     </div>
                   </div>

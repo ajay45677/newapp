@@ -25,7 +25,7 @@ const AboutTeam: React.FC = () => {
   const teamBoxesRef = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/team")
+    fetch("https://run.mocky.io/v3/8f91e868-d8a1-470a-9c28-78410a351e3e")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error("Error fetching values:", error));

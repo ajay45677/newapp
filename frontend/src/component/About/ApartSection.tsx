@@ -25,7 +25,7 @@ const ApartSection: React.FC = () => {
 
   // Fetch data
   useEffect(() => {
-    fetch("http://localhost:5000/api/apart")
+    fetch("https://run.mocky.io/v3/50c59c9a-882d-47ec-b820-086135445955")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error("Error fetching values:", error));
