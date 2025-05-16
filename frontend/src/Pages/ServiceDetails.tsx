@@ -185,7 +185,7 @@ const ServiceDetails: React.FC = () => {
             }}
             className={` ${
               isVisible [0]
-                ? "opacity-100 animate__animated animate__fadeInLeft animate__fast"
+                ? "opacity-100 animate__animated animate__slideInUp animate__fast"
                 : "opacity-0"
             }`}
           >
@@ -216,14 +216,14 @@ const ServiceDetails: React.FC = () => {
               <p 
                   className={`para-text ${
                     isVisible[1]
-                      ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+                      ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                       : "opacity-0"
                   }`}
               >{service.intro.description}</p>
               <button 
                   className={`blue-btn d-table mt-3 ${
                     isVisible[1]
-                      ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                      ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                       : "opacity-0"
                   }`}
                  data-bs-toggle="modal" data-bs-target="#topGetTouch">Get In Touch</button>
@@ -249,7 +249,7 @@ const ServiceDetails: React.FC = () => {
               }}
                className={`row ${
                 isVisible[2]
-                  ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                  ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                   : "opacity-0"
               }`}
           >
@@ -284,7 +284,7 @@ const ServiceDetails: React.FC = () => {
           <p  
                className={`heading-text ${
                 isVisible[3]
-                  ? "opacity-100 animate__animated animate__slideInRight animate__slower"
+                  ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                   : "opacity-0"
               }`}
           >{service?.highlights?.subtitle}</p>
@@ -294,7 +294,7 @@ const ServiceDetails: React.FC = () => {
                 <img src={item.image} alt={item.label} 
                       className={`img-fluid ${
                         isVisible[3]
-                          ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                          ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                           : "opacity-0"
                       }`} 
                  />
@@ -337,7 +337,7 @@ const ServiceDetails: React.FC = () => {
           <div 
               className={`row ${
                 isVisible[4]
-                  ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                  ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                   : "opacity-0"
               }`}
           >
@@ -403,7 +403,7 @@ const ServiceDetails: React.FC = () => {
                 <div key={idx} 
                     className={`row ${
                       isVisible[6]
-                        ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                        ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                         : "opacity-0"
                     }`}
                 >
@@ -449,7 +449,7 @@ const ServiceDetails: React.FC = () => {
             <Row 
               className={` ${
                 isVisible[7]
-                  ? "opacity-100 animate__animated animate__fadeInLeft animate__slower"
+                  ? "opacity-100 animate__animated animate__slideInUp animate__slower"
                   : "opacity-0"
               }`}
               key={rowIndex}

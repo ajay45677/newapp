@@ -70,7 +70,7 @@ const Privacy: React.FC = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <h2 className="animate__animated animate__fadeInLeft animate__slower">
+            <h2 className="animate__animated animate__fadeInUp animate__slower">
               {data.title}
             </h2>
             {data.sections.map((section, index) => (
@@ -81,7 +81,7 @@ const Privacy: React.FC = () => {
                 }}
                 className={`${
                   isVisible[index]
-                    ? "opacity-100 animate__animated animate__fadeInUp"
+                    ? "opacity-100 animate__animated animate__fadeInUp animate__slower"
                     : "opacity-0"
                 }`}
               >

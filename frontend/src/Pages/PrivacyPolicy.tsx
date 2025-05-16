@@ -59,7 +59,7 @@ const PrivacyPolicy: React.FC = () => {
           <nav aria-label="breadcrumb"
              className={` ${
               isVisible
-                ? "opacity-100 animate__animated animate__fadeInLeft animate__fast"
+                ? "opacity-100 animate__animated animate__fadeInUp animate_slower"
                 : "opacity-0"
             }`}
           >

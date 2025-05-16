@@ -29,7 +29,7 @@ const MainServices: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("https://run.mocky.io/v3/da32e9e8-0431-430e-b69c-ec79003bbf2d")
+    fetch("https://techinventive.free.beeceptor.com/api/service_block")
       .then((response) => response.json())
       .then((data: ServicesData) => setData(data))
       .catch((error) => console.error("Error fetching services:", error));
