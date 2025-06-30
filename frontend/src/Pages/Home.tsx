@@ -13,8 +13,8 @@ import BlogSlider from "../component/Home/BlogSlider";
 const Home: React.FC = () => {
     const sections = [
         //<AnimatedSection />,
-        <ValueSection />,
         <CounterSection />,
+        <ValueSection />,
         <OurServices />,
         <PortfolioSlider />,
         //<NewTeamSlider />,

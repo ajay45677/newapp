@@ -18,6 +18,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.scss";
 import "./responsive.scss";
+import ScrollToTop from './component/ScrollToTop';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -26,7 +27,7 @@ const App: React.FC = () => {
     <>
       {/* Show HomeHeader only on "/" route, otherwise show normal Header */}
       {location.pathname === "/" ? <HomeHeader /> : <Header />}
-
+       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

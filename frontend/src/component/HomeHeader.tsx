@@ -8,6 +8,7 @@ import OffcanvasMenu from "./OffcanvasMenu";
 import "animate.css";
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import BanneImage from "../img/consulting-firm-project-management.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -186,33 +187,41 @@ const HomeHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* Banner Image */}
-      <img src="https://www.techinventive.com/img/Rectangle%201.png" alt="Banner" className="banner-home" />
+      
 
       {/* Banner Content */}
-      <Container className="container-custom" >
-        <div className="home-banner-content" ref={contentRef}>
-          <h3>{typedTitle}</h3>
-          <p ref={pRef}>
-            Techinventive Software is a top-tier app development company. Their team is highly skilled and delivered a flawless app that exceeded our expectations
-          </p>
-          <div className="w-100 d-flex" ref={buttonRef}>
-            <Button className="blue-btn d-table" >Get In Touch</Button>
-            <Link to="/Tech_I_Portfolio_2024.pdf" target="_blank" rel="noopener noreferrer">
-              <div className="bg-fd">
-                <img
-                  className="pdf-download"
-                  alt="Drupal Development Services"
-                  src="https://www.techinventive.com/img/pdf_10435045.png"
-                />
-              </div>
-              Pdf View
-            </Link>
-          </div>
+      <Container className="" >
+        <div className="row">
+            <div className="col-md-6">
+               <div className="home-banner-content" ref={contentRef}>
+                  <h3>{typedTitle}</h3>
+                  <p ref={pRef}>
+                    Techinventive Software is a top-tier app development company. Their team is highly skilled and delivered a flawless app that exceeded our expectations
+                  </p>
+                  <div className="w-100 d-flex" ref={buttonRef}>
+                    <Button className="blue-btn d-table" >Let's Talk</Button>
+                    <Link to="/Tech_I_Portfolio_2024.pdf" target="_blank" rel="noopener noreferrer">
+                      <div className="bg-fd">
+                        <img
+                          className="pdf-download"
+                          alt="Drupal Development Services"
+                          src="https://www.techinventive.com/img/pdf_10435045.png"
+                        />
+                      </div>
+                      Download
+                    </Link>
+                  </div>
+                </div>
+            </div>
+            <div className="col-md-6">
+                 {/* Banner Image */}
+                <img src={BanneImage} alt="Banner" className="banner-home" />
+            </div>
         </div>
+        
 
         {/* Features */}
-        <div className="home-banner-content-bottom">
+        {/*<div className="home-banner-content-bottom">
           <div className="col-md-10">
             <div className="row">
               {[
@@ -248,7 +257,7 @@ const HomeHeader: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
+        </div>*/}
 
         {/* Social Links */}
         <div className="home-social">

@@ -3161,10 +3161,11 @@ $color_2: rgba(62, 62, 248, 1);
 		position: relative;
 		top: 0px;
 		left: 0px;
-		height: 600px;
+		height: auto;
 		width: 100%;
 		object-fit: cover;
 		object-position: left;
+		margin: 20px 0px;
 	}
 	.box-44 {
 		&:hover {
@@ -3205,9 +3206,12 @@ $color_2: rgba(62, 62, 248, 1);
 	.home-banner-content {
 		width: 100%;
 		float: left;
-		position: absolute;
-		left: 5%;
-		top: 167px;
+		position: relative;
+		left: 0%;
+		top: 0px;
+		left: 0;
+        top: 0;
+        padding: 126px 30px 0px;
 		h3 {
 			font-size: 45px;
 			line-height: 50px;
@@ -3222,11 +3226,22 @@ $color_2: rgba(62, 62, 248, 1);
 			width: 84%;
 		}
 		button {
-			margin-right: 0px;
+			margin-right: 20px;
 			margin-bottom: 24px;
 			display: block;
 		}
 	}
+	.experience-box {
+        margin: 0;
+    }
+	.bottom-content {
+		gap: 20px;
+		justify-content: center;
+		flex-direction: column;
+	}
+	.dc-br {
+       margin-top: 20px;
+    }
 	.t-name {
 		margin-top: 690%;
 	}

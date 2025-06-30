@@ -125,7 +125,7 @@ const OurServices: React.FC = () => {
 
   return (
     <div
-      className="value-section bg-white h-auto home-service"
+      className="value-section bg-white h-auto home-service pt-0"
       ref={sectionRef}
     >
       <Container className="container-custom">

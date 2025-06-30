@@ -9,7 +9,7 @@ const LogoSlider: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [typedTitle, setTypedTitle] = useState("");
-  const fullTitle = "Trusted by some of the best in the industry";
+  const fullTitle = "Trusted by leading companies";
 
   // Typing effect
   useEffect(() => {

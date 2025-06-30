@@ -122,6 +122,7 @@ body {
 .bg-whites {
 	background: rgba(255, 255, 255, 0.8);
 	padding: 0 100px;
+	
 	.off-fd {
 		li {
 			margin-bottom: 40px;
@@ -1158,12 +1159,19 @@ ul li {
 }
 .slider2 {
 	margin: 70px 0px 70px;
+	.logo-slide{
+        box-shadow: 0px 4px 20px 5px rgba(0,0,0,0.03);
+		border-radius: 10px;
+		background: #ffffff;
+		padding: 10px;
+		height: 100px;
+	}
 	img {
 		max-width: 100%;
 		height: auto;
 		float: none;
 		width: auto;
-		margin: 0px auto;
+		margin: 24px auto 0px;
 		display: block;
 	}
 	.slick-initialized {
@@ -1273,11 +1281,12 @@ ul li {
 }
 .home-banner {
 	position: relative;
-	height: 968px;
+	height: 616px;
 	.bg-whites {
 		background: #fff3;
 		z-index: 99;
 		border-bottom: 1px solid #fff3;
+		background: #ddd;
 		.nav-link {
 			font-family: 'Poppins', sans-serif !important;
 			font-size: 16px !important;
@@ -1290,18 +1299,19 @@ ul li {
 	}
 }
 .banner-home {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 968px;
-	width: 100%;
-	object-fit: cover;
+	position: relative;
+    top: 167px;
+    left: -34px;
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+	border-radius: 10px;
 }
 .home-banner-content {
-	width: 50%;
-	float: right;
-	position: absolute;
-	left: 50%;
+	width: 100%;
+	float: left;
+	position: relative;
+	left: 0%;
 	top: 167px;
 	.blue-btn {
 		&:hover {
@@ -1315,7 +1325,7 @@ ul li {
 		font-weight: 700;
 		line-height: 63px;
 		text-align: left;
-		color: #fff;
+		color: #333;
 		padding: 0px 0px 36px;
 		width: 70%;
 	}
@@ -1325,7 +1335,7 @@ ul li {
 		font-weight: 500;
 		line-height: 28.5px;
 		text-align: left;
-		color: #fff;
+		color: #333;
 		margin: 0px 0px 31px;
 		width: 75%;
 	}
@@ -1348,7 +1358,7 @@ ul li {
 		font-weight: 600;
 		line-height: 22.5px;
 		text-align: center;
-		color: #fff;
+		color: #333;
 		text-decoration: none;
 	}
 }
@@ -3608,4 +3618,115 @@ footer .box-5 a:hover {
 }
 .slick-slide {
 	transform: none !important; /* not recommended unless testing */
+}
+.dc-br{
+	border: 1px solid #fff;
+	border-radius: 5px;
+	padding: 20px 20px;
+}
+.experience-box{
+   margin: 0px 15px;
+}
+.experience-box, .our-expert-team-box, .google-reviews-box {
+    position: relative;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px 51px;
+	box-shadow: 0px 4px 20px 5px rgba(0, 0, 0, 0.03)
+}
+.experience-box .experience-body {
+    gap: 20px;
+}
+.experience-box .experience-body img {
+    width: 33px;
+}
+.experience-box .experience-content {
+    gap: 10px;
 } 
+.experience-box .experience-content h1 {
+    font-family: "open-sans", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+	margin: 0px;
+}
+.experience-box .experience-content p {
+    line-height: 1.4;
+	font-size: 12px;
+	color: #1351D8;
+	text-align: left;
+	margin: 0px;
+}
+.experience-box .experience-content p span {
+    color: #1C1C1C;
+    opacity: .85;
+    display: block;
+}
+.our-expert-team-box .our-expert-team-box-inner {
+    gap: 10px;
+}
+.our-expert-team-box .imgs img {
+        width: 30px;
+}
+.our-expert-team-box .our-expert-team-box-inner p {
+    line-height: 1;
+    font-weight: 500;
+    color: #1351D8;
+    margin-bottom: 0;
+	font-size: 12px;
+}
+.our-expert-team-box .our-expert-team-box-inner p span {
+    opacity: 0.85;
+    color: #1C1C1C;
+}
+.our-expert-team-box .imgs img + img {
+    margin-left: -12px;
+}
+.bottom-content {
+    gap: 24px;
+	justify-content: center;
+}
+.bottom-content .google-reviews-box {
+	align-items: center;
+	padding: 21px 46px;
+	display: flex;
+    gap: 20px;
+}
+.bottom-content .google-reviews-box .left span {
+    font-size: 9px;
+	color: #454545;
+	font-weight: 500;
+    line-height: 1;
+    margin-bottom: 12px;
+	display: block;
+}
+.google-reviews-box .left img {
+    display: block;
+	margin-bottom: 0px;
+}
+.bottom-content .google-reviews-box .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+}
+.bottom-content .google-reviews-box .stars {
+    margin-bottom: 10px;
+	gap: 3px;
+    margin-top: -5px;
+	color:#FFD600;
+	font-size: 14px;
+}
+.bottom-content .google-reviews-box .right p {
+    font-size: 12px;
+	color: #1351D8;
+    font-weight: 400;
+    line-height: 1;
+}
+.bottom-content .google-reviews-box .right p span {
+    color: #454545;
+    opacity: 0.82;
+}
+.bottom-content .our-expert-team-box, .bottom-content .google-reviews-box {
+    width: 50%;
+}

@@ -139,7 +139,7 @@ const Footer: React.FC = () => {
                 <img alt="Drupal development services" src="https://www.techinventive.com/img/techinventive-big-logo.png" />
               </a>
               <p>
-                Techinventive Software is a premier software and web development company offering a comprehensive suite of services including AI, ML, Blockchain, Game development, Python, Node.js, Golang, Ruby on Rails, and Drupal. Based in Delhi NCR.
+                A premier software and web development company offering a comprehensive suite of IT services.
               </p>
             </div>
           </div>

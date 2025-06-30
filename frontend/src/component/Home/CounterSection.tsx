@@ -205,7 +205,7 @@ return (
                 }}
               >
                 <h5 className="count percent">
-                  <Counter start={0} end={value} duration={2000} />
+                  <Counter start={0} end={value} duration={10000} />
                 </h5>
                 <p>{["countries", "working hours", "Live projects"][index]}</p>
               </div>
@@ -215,11 +215,10 @@ return (
 
         <div className="row box-ach mt-12">
           <div className="col-md-6 d-flex align-items-center order-smd-1">
-            <div className="w-100">
+            <div className="w-100 dc-br">
               {[
-                "Techinventive Software is a premier provider of web designing, web development, responsive web designing, and app designing services. With a focus on innovation and customer satisfaction, we strive to deliver cutting-edge solutions that exceed expectations.",
-                "At Techinventive Software, we understand the importance of a strong online presence in today's digital world. We work closely with our clients to provide tailored solutions that meet their needs.",
-                "Our commitment to excellence and customer satisfaction sets us apart. We take pride in our work and are passionate about helping our clients succeed.",
+                "At Techinventive Software, we don’t just build websites — we craft digital experiences that captivate, convert, and grow your business. From sleek web designs to powerful apps, our expert team delivers innovative, tailor-made solutions that make your brand stand out.",
+                "Whether you're reimagining your current site or launching something new, our mission is simple: turn your vision into a high-performing digital reality. With a commitment to creativity, quality, and customer success — we're here to elevate your online presence like never before.",
               ].map((text, i) => (
                 <p
                   key={i}
@@ -252,12 +251,49 @@ return (
           </div>
 
           <div className="col-md-6">
-            <img
+            {/*<img
               ref={imageRef}
               src="https://www.techinventive.com/img/7f3fddff1de1556bba6e8ae55707a1dd.jpg"
               alt="Responsive Website Design"
               className="rounded-lg shadow-lg w-full"
-            />
+            />*/}
+            <div className="experience-box simple-shadow bounce-in">
+                <div className="experience-body d-flex align-items-center">
+                    <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/icon1-1.svg" alt="" />
+                    <div className="experience-content d-flex align-items-center">
+                        <h1>+8</h1>
+                        <p>Years  <span>Experience</span></p>
+                    </div>
+                </div>
+            </div>
+            <div className="bottom-content d-flex mt-4">
+                <div className="our-expert-team-box simple-shadow bounce-in delay-2">
+                    <a href="">
+                        <div className="our-expert-team-box-inner d-flex align-items-center">
+                            <div className="imgs imgs1 d-flex align-items-center">
+                                <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/small-img-4-1.png" alt="" />
+                                <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/small-img-3-1.png" alt="" />
+                                <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/small-img-2-1.png" alt="" />
+                                <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/small-img-1-1.png" alt="" />
+                            </div>
+                            <p>Meet <span>Our Experts</span></p>
+                        </div>
+                    </a>
+                </div>
+            
+                <div className="google-reviews-box simple-shadow bounce-in delay-3">
+                    <div className="left">
+                        <span>Verified by</span>
+                        <img decoding="async" src="https://wpriverthemes.com/synck/wp-content/uploads/2023/11/icon2-1.svg" alt="" />
+                    </div>
+                    <div className="right">
+                        <div className="stars d-flex align-items-center">
+                            ★★★★★                              
+                        </div>
+                        <p>3245  <span>Reviews</span></p>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>

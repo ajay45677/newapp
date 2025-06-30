@@ -245,7 +245,7 @@ const Header: React.FC = () => {
           />
           <Container className="container-custom">
             <div className="banner-content">
-              <h2>{typedTitle}</h2>
+              <h2>{bannerContent.title}</h2>
               <p ref={pRef}>{bannerContent.description}</p>
             </div>
           </Container>
